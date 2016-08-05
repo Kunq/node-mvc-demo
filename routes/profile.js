@@ -29,6 +29,16 @@ router.get('/profile', stormpath.loginRequired, function(req, res) {
   res.render('profile');
 });
 
+
+/**
+ * When someone visits /profile/:id, render the profile detail.
+ */
+
+router.get('/profile/:id', stormpath.loginRequired, function(req, res) {
+  var userid = req.param('id');
+  res.render('profile_detail', {userid: userid});
+});
+
 /**
  * When someone posts the profile form, read the data and save it to the
  * custom data object on the account.  The body-parser library is used
