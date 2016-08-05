@@ -11,14 +11,14 @@ var router = express.Router();
 router.get('/', stormpath.loginRequired, function(req, res) {
   var db = res.locals.mongodb;
   var userInfo = [];
+  req.session.user = req.user;
+  //logger.info("session variable: " + JSON.stringify(req.session.user));
   //logger.info("Index Page mongodb: " + db);
   db.collection('profile').findOne({'href': req.user.href})
   .then(function(data){
-
     if (data === null) {
       db.collection('profile').insertOne(req.user);
       logger.info('user interted');
-      //res.render('basicsearch/new');
      }
     else{
       userInfo = [
