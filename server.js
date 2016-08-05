@@ -34,26 +34,8 @@ var db;
 MongoClient.connect(config.mongodb, function(err, database) {
   if(err) throw err;
   logger.info("Initiate MongoDB connection pool.");
-  logger.info("database: " + database);
   db = database;
 });
-
-app.get('/logout', function(req, res) {
-  req.session.reset();
-  res.redirect('/');
-});
-
-/**
- * Stormpath initialization.
- */
-app.use(stormpath.init(app, {
-  website: true,
-  apikey:{
-  	id: process.env['STORMPATH_API_KEY_ID'],
-  	secret: process.env['STORMPATH_API_KEY_SECRET']
-	}	 
-}));
-logger.info('Initializing Stormpath');
 
 /*
 * Client Session Settings
@@ -67,6 +49,24 @@ app.use(session({
   secure: true, //ensures cookies are only used over HTTPS
   ephemeral: true //deletes the cookie when the browser is closed
 }));
+
+
+app.post('/logout', function (req, res, next) {
+      req.session.user = null;
+      next();
+});
+
+/**
+ * Stormpath initialization.
+ */
+app.use(stormpath.init(app, {
+  website: true,
+  apikey:{
+  	id: process.env['STORMPATH_API_KEY_ID'],
+  	secret: process.env['STORMPATH_API_KEY_SECRET']
+	}	 
+}));
+logger.info('Initializing Stormpath');
 
 /*
  * Global variables for middleware
