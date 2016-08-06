@@ -72,7 +72,8 @@ logger.info('Initializing Stormpath');
  * Global variables for middleware
  */
 app.use(function(req, res, next){
-  res.locals.mongodb = db;
+  //res.locals.mongodb = db;
+  req.mongodb = db;
   next();
 });
 

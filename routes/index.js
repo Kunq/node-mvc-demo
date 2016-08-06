@@ -9,11 +9,10 @@ var router = express.Router();
  * Home page: load profile 
  */
 router.get('/', stormpath.loginRequired, function(req, res) {
-  var db = res.locals.mongodb;
+  var db = req.mongodb;
   var userInfo = [];
   req.session.user = req.user;
-  //logger.info("session variable: " + JSON.stringify(req.session.user));
-  //logger.info("Index Page mongodb: " + db);
+  logger.info("Index Page mongodb: " + db);
   db.collection('profile').findOne({'href': req.user.href})
   .then(function(data){
     if (data === null) {
