@@ -3,16 +3,31 @@ var express = require('express');
 var stormpath = require('express-stormpath');
 var logger = require('../utils/logger');
 var router = express.Router();
+// var MongoClient = require('mongodb').MongoClient;
+// var url = 'mongodb://localhost:27017/platerate';
+
+
+//Initialize connection once
+// MongoClient.connect(url, function(err, database) {
+//    if(err) throw err;
+//      console.log("Connected correctly to server.");
+//    db = database;
+//  });
 
 
 /**
  * Home page: load profile 
  */
 router.get('/', stormpath.loginRequired, function(req, res) {
+// MongoClient.connect(url, function(err, database) {
+//    if(err) throw err;
+//      console.log("Connected correctly to server.");
+//    db = database;
+//  });
+
   var db = req.mongodb;
   var userInfo = [];
   req.session.user = req.user;
-  logger.info("Index Page mongodb: " + db);
   db.collection('profile').findOne({'href': req.user.href})
   .then(function(data){
     if (data === null) {

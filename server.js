@@ -50,6 +50,9 @@ app.use(session({
   ephemeral: true //deletes the cookie when the browser is closed
 }));
 
+/* Middleware
+*/
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/logout', function (req, res, next) {
       req.session.user = null;
@@ -125,15 +128,14 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   if (err.status == '404') {
-	  res.render('404', {
+    res.render('404', {
     message: err.message,
-    error: {} 
-	});
+    error: err 
+    });
   } else {	
      res.render('error', {
-     message: err.message,
-     error: {} 
-	});
+       error: {} 
+     });
   }
 });
 

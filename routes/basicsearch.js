@@ -1,6 +1,15 @@
 
 var express = require('express');
 var router = express.Router();                                   
+// var MongoClient = require('mongodb').MongoClient;
+// var url = 'mongodb://localhost:27017/platerate';
+
+// //Initialize connection once
+// MongoClient.connect(url, function(err, database) {
+//    if(err) throw err;
+//      console.log("Connected correctly to server.");
+//    db = database;
+//  });
 
 /* 
  * Basicsearch GET page
