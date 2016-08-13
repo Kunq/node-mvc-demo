@@ -9,7 +9,26 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </head>
 <body>
-	<h1><%= title %></h1>
-   <p>Basic search interface</p>
+  <div class="container">
+    <div class="col-md-12">
+  	 <h1><%= title %></h1>
+     <form action="/basicsearch" method="post">
+       <input type="text" name="basic_search" placeholder="Search Menu Item or Restaurant" style="width: 350px; border: 1px">
+       <button type="submit">Submit</button>
+     </form>
+
+     <% if (results) { %>
+       <% for( var i=0; i < results.length; i++) { %>
+          <section> 
+            <p>
+	    <%= results[i].menuitem[0].name %> <br />
+            Description: <%= results[i].menuitem[0].description %><br />
+            Restaurant: <%= results[i].name %>
+	    </p> 
+          </section>
+       <% } %>
+      <% } %>
+    </div>
+  </div>
 </body>
 </html>

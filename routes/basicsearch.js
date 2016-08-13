@@ -1,6 +1,8 @@
 
 var express = require('express');
-var router = express.Router();                                   
+var router = express.Router();   
+var assert = require('assert');  
+var _ = require('lodash');                              
 // var MongoClient = require('mongodb').MongoClient;
 // var url = 'mongodb://localhost:27017/platerate';
 
@@ -17,8 +19,34 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
   var db = req.mongodb;
-  res.render('basicsearch', {title: "Basic search"});
+  res.render('basicsearch', {title: "Basic search", results: null});
 });
+
+router.post('/', function(req, res, next){
+  var db = req.mongodb;
+  var input = req.body.basic_search;
+  var resultArray = [];
+
+  var cursor = db.collection('venueMenu_test').find(
+    {
+       "menuitem": {
+            $elemMatch: {
+              name: new RegExp(input, 'i')
+            }
+       }
+    },
+    {"menuitem.$":1, "name":1, _id:0}
+  );
+
+  cursor.forEach(function(data){
+   // assert.equal(null, err);
+    resultArray.push(data);
+  }, function() {
+    //res.send('seaching...' + input + '<br />' + JSON.stringify(resultArray));
+    res.render('basicsearch', {title: "Basic search", results: resultArray});
+  });
+});
+
 
 router.post('/insert', function(req, res, next){
   /*
